@@ -8,15 +8,28 @@ Personal dotfiles for managing shell configurations and aliases across different
 - `aliases/` - Directory containing various alias configurations
   - `git.sh` - Git-related aliases
   - `general.sh` - General purpose aliases
+- `platforms/` - Platform-specific configurations
+  - `macos/` - macOS-specific configurations and installation scripts
+  - `ubuntu/` - Ubuntu-specific configurations and installation scripts
 
 ## Installation
 
 To use these dotfiles, clone this repository and create symbolic links to the files in your home directory:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/dotfiles.git
+git clone https://github.com/barnolacesc/dotfiles.git
 cd dotfiles
 ./install.sh
+```
+
+For platform-specific installation:
+
+```bash
+# For macOS
+./platforms/macos/install.sh
+
+# For Ubuntu
+./platforms/ubuntu/install.sh
 ```
 
 ## Usage
