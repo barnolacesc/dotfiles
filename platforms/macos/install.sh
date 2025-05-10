@@ -66,7 +66,6 @@ install_package ripgrep
 install_package fd
 install_package fzf
 install_package bat
-install_package eza
 
 # Install Oh My Zsh if not already installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
