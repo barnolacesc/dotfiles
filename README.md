@@ -1,44 +1,120 @@
 # Dotfiles
 
-Personal dotfiles for managing shell configurations and aliases across different machines.
+Personal dotfiles for managing shell configurations and aliases across different machines. This repository contains a comprehensive Zsh setup with Oh My Zsh, useful aliases, and platform-specific configurations.
 
-## Structure
+## Features
 
-- `.zshrc` - Main Zsh configuration file
-- `aliases/` - Directory containing various alias configurations
-  - `git.sh` - Git-related aliases
-  - `general.sh` - General purpose aliases
-- `platforms/` - Platform-specific configurations
-  - `macos/` - macOS-specific configurations and installation scripts
-  - `ubuntu/` - Ubuntu-specific configurations and installation scripts
+- **Enhanced Zsh Configuration**
+  - Oh My Zsh with Robby Russell theme
+  - SSH-aware prompt
+  - Syntax highlighting and autosuggestions
+  - Comprehensive history and completion settings
+
+- **Useful Aliases**
+  - Git shortcuts (20 most common commands)
+  - Docker compose shortcuts
+  - System management aliases
+  - Directory navigation shortcuts
+
+- **Platform Support**
+  - macOS configuration with Homebrew
+  - Ubuntu configuration with apt
+  - Automatic platform detection and setup
+
+## Prerequisites
+
+- Git
+- Zsh
+- Curl or Wget
 
 ## Installation
 
-To use these dotfiles, clone this repository and create symbolic links to the files in your home directory:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/barnolacesc/dotfiles.git
+   cd dotfiles
+   ```
 
-```bash
-git clone https://github.com/barnolacesc/dotfiles.git
-cd dotfiles
-./install.sh
-```
+2. Run the appropriate installation script for your platform:
 
-For platform-specific installation:
+   For macOS:
+   ```bash
+   ./platforms/macos/install.sh
+   ```
 
-```bash
-# For macOS
-./platforms/macos/install.sh
+   For Ubuntu:
+   ```bash
+   ./platforms/ubuntu/install.sh
+   ```
 
-# For Ubuntu
-./platforms/ubuntu/install.sh
-```
+The installation script will:
+- Install required packages
+- Set up Oh My Zsh
+- Configure Zsh as your default shell
+- Create necessary symbolic links
+- Install additional plugins
+
+## Plugin Installation
+
+The configuration uses two additional plugins that need to be installed manually:
+
+1. Zsh Autosuggestions:
+   ```bash
+   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+   ```
+
+2. Zsh Syntax Highlighting:
+   ```bash
+   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+   ```
 
 ## Usage
 
-After installation, your shell configurations and aliases will be automatically loaded when you start a new terminal session.
+After installation, you'll have access to:
+
+### Git Aliases
+- `g` - Basic git command
+- `ga` - Add files to staging
+- `gco` - Checkout branch
+- `gc` - Commit with verbose output
+- `gp` - Push to remote
+- And 15 more common Git commands
+
+### Docker Shortcuts
+- `dc` - Docker compose command
+
+### System Management
+- `status` - Check service status
+- `start` - Start a service
+- `stop` - Stop a service
+- `restart` - Restart a service
+- `enable` - Enable a service
+- `disable` - Disable a service
+
+### System Aliases
+- `cls` - Clear screen
+- `ll` - List files with details
+- `la` - List all files
+- `l` - List files in compact format
+
+## Customization
+
+To add your own configurations:
+
+1. Add new aliases in the `aliases/` directory
+2. Modify `.zshrc` for shell configuration changes
+3. Update platform-specific scripts in `platforms/` if needed
 
 ## Maintenance
 
-To add new configurations:
-1. Add your new configuration files to the appropriate directory
-2. Update the README.md if necessary
-3. Commit and push your changes 
+To update your dotfiles:
+1. Pull the latest changes:
+   ```bash
+   cd ~/.dotfiles
+   git pull
+   ```
+2. Run the installation script again to apply any new changes
+
+## Contributing
+
+Feel free to fork this repository and customize it for your own use. If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request. 

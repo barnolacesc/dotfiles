@@ -1,6 +1,31 @@
-# Enable colors and change prompt
+# -------------------------------
+# ZSH Configuration File
+# -------------------------------
+
+# Set ZSH as your default shell
+export SHELL=/usr/bin/zsh
+
+# Path updates
+export PATH="$HOME/bin:/usr/local/bin:$PATH"
+
+# Oh My Zsh configuration
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="robbyrussell"
+
+# Plugins
+plugins=(
+  git
+  docker
+  docker-compose
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+
+# Load Oh My Zsh
+source $ZSH/oh-my-zsh.sh
+
+# Enable colors
 autoload -U colors && colors
-PS1='%F{green}%n%f@%F{blue}%m%f %F{yellow}%~%f %# '
 
 # History configuration
 HISTFILE=~/.zsh_history
@@ -15,31 +40,43 @@ zmodload zsh/complist
 compinit
 _comp_options+=(globdots)
 
-# Load aliases
+# --- Custom Prompt ---
+# Format: [user@host][SSH][cwd]$
+# Check if session is over SSH
+if [[ -n "$SSH_CONNECTION" ]]; then
+    SSH_INDICATOR="%{$fg[red]%}[SSH]%{$reset_color%}"
+else
+    SSH_INDICATOR=""
+fi
+
+# Prompt components
+PROMPT='%{$fg[cyan]%}%n@%m%{$reset_color%} ${SSH_INDICATOR} %{$fg[yellow]%}%~%{$reset_color%} %# '
+
+# --- Systemd shortcut functions ---
+function status()  { systemctl status "$@" }
+function start()   { systemctl start "$@" }
+function stop()    { systemctl stop "$@" }
+function restart() { systemctl restart "$@" }
+function enable()  { systemctl enable "$@" }
+function disable() { systemctl disable "$@" }
+
+# --- Docker shortcuts ---
+alias dc='docker compose'
+
+# --- System aliases ---
+alias cls='clear'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Load aliases from dotfiles
 for file in $HOME/.dotfiles/aliases/*.sh; do
     [ -f "$file" ] && source "$file"
 done
 
-# Useful aliases
-alias ls='ls --color=auto'
-alias ll='ls -la'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Directory shortcuts
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-
-# Git shortcuts
-alias g='git'
-alias ga='git add'
-alias gc='git commit'
-alias gp='git push'
-alias gl='git pull'
-alias gs='git status'
-
-# System
-alias update='sudo apt update'
-alias upgrade='sudo apt upgrade'
-alias clean='sudo apt autoremove' 
+# --- Plugin Installation Instructions ---
+# zsh-autosuggestions:
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+#
+# zsh-syntax-highlighting:
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 

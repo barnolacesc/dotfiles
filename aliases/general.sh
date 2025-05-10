@@ -40,12 +40,12 @@ alias mv='mv -i'
 alias ln='ln -i'
 
 # Quick edit
-alias edit='code'
-alias zshconfig='code ~/.zshrc'
-alias ohmyzsh='code ~/.oh-my-zsh'
+alias zshconfig='vi ~/.zshrc'
+alias ohmyzsh='vi ~/.oh-my-zsh'
 
 # Directory shortcuts
 alias home='cd ~'
 alias desktop='cd ~/Desktop'
 alias documents='cd ~/Documents'
 alias downloads='cd ~/Downloads' 
+alias repos='cd ~/repos'
