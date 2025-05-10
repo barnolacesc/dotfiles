@@ -75,6 +75,9 @@ mkdir -p ~/.dotfiles
 echo "Creating symbolic links for Debian..."
 
 # Link .zshrc
+echo "Removing any existing .zshrc..."
+rm -f ~/.zshrc
+echo "Creating symlink to .zshrc..."
 ln -sf "$DOTFILES_DIR/.zshrc" ~/.zshrc
 
 # Link aliases directory
