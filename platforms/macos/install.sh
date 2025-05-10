@@ -1,10 +1,16 @@
 #!/bin/bash
 
-set -e
-
 # Get the directory where the script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DOTFILES_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
+
+# Initialize counters
+REQUIRED_TOTAL=2  # zsh and git
+REQUIRED_INSTALLED=0
+RECOMMENDED_TOTAL=6  # curl, wget, fzf, bat, ripgrep, fd
+RECOMMENDED_INSTALLED=0
+OPTIONAL_TOTAL=2  # htop, tree
+OPTIONAL_INSTALLED=0
 
 # Function to check if a command exists
 command_exists() {
@@ -14,11 +20,34 @@ command_exists() {
 # Function to install a package if not already installed
 install_package() {
     local package=$1
+    local required=$2
+    local category=$3
     if ! brew list "$package" &>/dev/null; then
         echo "Installing $package..."
-        brew install "$package"
+        if brew install "$package"; then
+            echo "✓ $package installed successfully"
+            case $category in
+                "required") REQUIRED_INSTALLED=$((REQUIRED_INSTALLED + 1)) ;;
+                "recommended") RECOMMENDED_INSTALLED=$((RECOMMENDED_INSTALLED + 1)) ;;
+                "optional") OPTIONAL_INSTALLED=$((OPTIONAL_INSTALLED + 1)) ;;
+            esac
+        else
+            if [ "$required" = "true" ]; then
+                echo "❌ Failed to install required package: $package"
+                echo "Please install it manually and run the script again"
+                exit 1
+            else
+                echo "⚠️  Failed to install optional package: $package"
+                echo "Continuing with installation..."
+            fi
+        fi
     else
-        echo "$package is already installed, skipping..."
+        echo "✓ $package is already installed"
+        case $category in
+            "required") REQUIRED_INSTALLED=$((REQUIRED_INSTALLED + 1)) ;;
+            "recommended") RECOMMENDED_INSTALLED=$((RECOMMENDED_INSTALLED + 1)) ;;
+            "optional") OPTIONAL_INSTALLED=$((OPTIONAL_INSTALLED + 1)) ;;
+        esac
     fi
 }
 
@@ -48,31 +77,49 @@ echo "Setting up macOS-specific configurations..."
 # Check if Homebrew is installed
 if ! command_exists brew; then
     echo "Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+        echo "❌ Failed to install Homebrew"
+        echo "Please install it manually and run the script again"
+        exit 1
+    fi
 else
-    echo "Homebrew is already installed, updating..."
-    brew update
+    echo "✓ Homebrew is already installed"
+    echo "Updating Homebrew..."
+    if ! brew update; then
+        echo "⚠️  Failed to update Homebrew"
+        echo "Continuing with installation..."
+    fi
 fi
 
-# Install macOS-specific packages
-echo "Installing macOS-specific packages..."
-install_package zsh
-install_package git
-install_package wget
-install_package curl
-install_package htop
-install_package tree
-install_package ripgrep
-install_package fd
-install_package fzf
-install_package bat
+# Install required packages (these are essential)
+echo "Installing required packages..."
+install_package zsh true "required"
+install_package git true "required"
+
+# Install recommended packages (these are nice to have)
+echo "Installing recommended packages..."
+install_package curl false "recommended"
+install_package wget false "recommended"
+install_package fzf false "recommended"
+install_package bat false "recommended"
+install_package ripgrep false "recommended"
+install_package fd false "recommended"
+
+# Install optional packages (these can be skipped)
+echo "Installing optional packages..."
+install_package htop false "optional"
+install_package tree false "optional"
 
 # Install Oh My Zsh if not already installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "Installing Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    if ! sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended; then
+        echo "❌ Failed to install Oh My Zsh"
+        echo "Please install it manually and run the script again"
+        exit 1
+    fi
 else
-    echo "Oh My Zsh is already installed, skipping..."
+    echo "✓ Oh My Zsh is already installed"
 fi
 
 # Install required plugins
@@ -84,31 +131,42 @@ HIGHLIGHT_DIR="$ZSH_CUSTOM_DIR/plugins/zsh-syntax-highlighting"
 
 if [ ! -d "$AUTO_DIR" ]; then
     echo "Installing zsh-autosuggestions..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTO_DIR"
+    if ! git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTO_DIR"; then
+        echo "❌ Failed to install zsh-autosuggestions"
+        echo "Please install it manually and run the script again"
+        exit 1
+    fi
 else
-    echo "zsh-autosuggestions is already installed, updating..."
-    cd "$AUTO_DIR" && git pull && cd - > /dev/null
+    echo "✓ zsh-autosuggestions is already installed"
 fi
 
 if [ ! -d "$HIGHLIGHT_DIR" ]; then
     echo "Installing zsh-syntax-highlighting..."
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HIGHLIGHT_DIR"
+    if ! git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HIGHLIGHT_DIR"; then
+        echo "❌ Failed to install zsh-syntax-highlighting"
+        echo "Please install it manually and run the script again"
+        exit 1
+    fi
 else
-    echo "zsh-syntax-highlighting is already installed, updating..."
-    cd "$HIGHLIGHT_DIR" && git pull && cd - > /dev/null
+    echo "✓ zsh-syntax-highlighting is already installed"
 fi
 
 # Install fzf key bindings if fzf is installed
 if command_exists fzf; then
     echo "Installing fzf key bindings..."
     if $(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc > /dev/null 2>&1; then
-        echo "fzf key bindings installed successfully."
+        echo "✓ fzf key bindings installed successfully"
     else
-        echo "Warning: fzf key bindings installation encountered an issue."
+        echo "⚠️  Failed to install fzf key bindings"
+        echo "Continuing with installation..."
     fi
 else
-    echo "Warning: fzf not found, skipping key bindings installation."
+    echo "⚠️  fzf not found, skipping key bindings installation"
 fi
 
 echo -e "\033[1;32m ✓ macOS dotfiles installation complete!\033[0m"
-echo "Please restart your terminal or run 'source ~/.zshrc' to apply changes." 
+echo -e "\nInstallation Summary:"
+echo -e "Required packages: $REQUIRED_INSTALLED/$REQUIRED_TOTAL installed"
+echo -e "Recommended packages: $RECOMMENDED_INSTALLED/$RECOMMENDED_TOTAL installed"
+echo -e "Optional packages: $OPTIONAL_INSTALLED/$OPTIONAL_TOTAL installed"
+echo -e "\nPlease restart your terminal or run 'source ~/.zshrc' to apply changes." 
