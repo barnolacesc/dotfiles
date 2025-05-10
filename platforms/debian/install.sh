@@ -18,6 +18,15 @@ command_exists() {
     command -v "$1" &> /dev/null
 }
 
+# Function to run commands with sudo if not root
+run_with_sudo() {
+    if [ "$(id -u)" -eq 0 ]; then
+        "$@"
+    else
+        sudo "$@"
+    fi
+}
+
 # Function to install a package if not already installed
 install_package() {
     local package=$1
@@ -25,7 +34,7 @@ install_package() {
     local category=$3
     if ! dpkg -l | grep -q "^ii  $package "; then
         echo "Installing $package..."
-        if sudo apt-get install -y "$package"; then
+        if run_with_sudo apt-get install -y "$package"; then
             echo "✓ $package installed successfully"
             case $category in
                 "required") REQUIRED_INSTALLED=$((REQUIRED_INSTALLED + 1)) ;;
@@ -81,7 +90,7 @@ fi
 
 # Update package lists
 echo "Updating package lists..."
-if ! sudo apt-get update; then
+if ! run_with_sudo apt-get update; then
     echo "❌ Failed to update package lists"
     echo "Please check your internet connection and try again"
     exit 1

@@ -11,6 +11,7 @@ RECOMMENDED_TOTAL=6  # curl, wget, fzf, bat, ripgrep, fd
 RECOMMENDED_INSTALLED=0
 OPTIONAL_TOTAL=2  # htop, tree
 OPTIONAL_INSTALLED=0
+ADDITIONAL_COMPONENTS=()
 
 # Function to check if a command exists
 command_exists() {
@@ -49,6 +50,13 @@ install_package() {
             "optional") OPTIONAL_INSTALLED=$((OPTIONAL_INSTALLED + 1)) ;;
         esac
     fi
+}
+
+# Function to track additional component status
+track_component() {
+    local name=$1
+    local status=$2
+    ADDITIONAL_COMPONENTS+=("$name:$status")
 }
 
 # Create necessary directories
@@ -156,9 +164,11 @@ if command_exists fzf; then
     echo "Installing fzf key bindings..."
     if $(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc > /dev/null 2>&1; then
         echo "✓ fzf key bindings installed successfully"
+        track_component "fzf key bindings" "✓ installed"
     else
         echo "⚠️  Failed to install fzf key bindings"
         echo "Continuing with installation..."
+        track_component "fzf key bindings" "❌ failed"
     fi
 else
     echo "⚠️  fzf not found, skipping key bindings installation"
@@ -169,4 +179,8 @@ echo -e "\nInstallation Summary:"
 echo -e "Required packages: $REQUIRED_INSTALLED/$REQUIRED_TOTAL installed"
 echo -e "Recommended packages: $RECOMMENDED_INSTALLED/$RECOMMENDED_TOTAL installed"
 echo -e "Optional packages: $OPTIONAL_INSTALLED/$OPTIONAL_TOTAL installed"
+for component in "${ADDITIONAL_COMPONENTS[@]}"; do
+    IFS=':' read -r name status <<< "$component"
+    echo -e "$name: $status"
+done
 echo -e "\nPlease restart your terminal or run 'source ~/.zshrc' to apply changes." 
