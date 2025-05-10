@@ -32,7 +32,15 @@ echo "Creating symbolic links for macOS..."
 ln -sf "$DOTFILES_DIR/.zshrc" ~/.zshrc
 
 # Link aliases directory
+rm -rf ~/.dotfiles/aliases  # Remove any existing symlink or directory
 ln -sf "$DOTFILES_DIR/aliases" ~/.dotfiles/aliases
+
+# Create private aliases file from template if it doesn't exist
+if [ ! -f ~/.dotfiles/aliases/private.sh ]; then
+    echo "Creating private aliases file from template..."
+    cp "$DOTFILES_DIR/aliases/private.sh.template" ~/.dotfiles/aliases/private.sh
+    echo "Private aliases file created. Edit ~/.dotfiles/aliases/private.sh to add your personal aliases."
+fi
 
 # macOS-specific configurations
 echo "Setting up macOS-specific configurations..."

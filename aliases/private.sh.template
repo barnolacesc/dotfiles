@@ -1,0 +1,23 @@
+# Private aliases - Machine-specific configurations
+# This file is not tracked by git and is meant for personal use only
+# Copy this file to private.sh and add your personal aliases there
+
+# Example: Custom IP addresses
+# alias myvpn='ssh user@192.168.1.100'
+# alias myprod='ssh user@prod-server.example.com'
+
+# Example: Machine-specific paths
+# alias projects='cd ~/my-special-projects'
+# alias docs='cd ~/my-documents'
+
+# Example: Custom environment variables
+# export MY_API_KEY='your-api-key'
+# export MY_DB_PASSWORD='your-db-password'
+
+# Example: Machine-specific tool configurations
+# alias docker='docker -H tcp://my-docker-host:2375'
+# alias kubectl='kubectl --context=my-cluster'
+
+# Example: Local development shortcuts
+# alias start-local='./scripts/start-local.sh'
+# alias test-local='./scripts/test-local.sh'

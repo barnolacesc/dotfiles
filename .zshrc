@@ -69,10 +69,17 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# Load aliases from dotfiles
-for file in $HOME/.dotfiles/aliases/*.sh; do
-    [ -f "$file" ] && source "$file"
+# Source aliases
+for file in ~/.dotfiles/aliases/*.sh; do
+    if [ -f "$file" ]; then
+        source "$file"
+    fi
 done
+
+# Source private aliases if they exist
+if [ -f ~/.dotfiles/aliases/private.sh ]; then
+    source ~/.dotfiles/aliases/private.sh
+fi
 
 # --- Plugin Installation Instructions ---
 # zsh-autosuggestions:
