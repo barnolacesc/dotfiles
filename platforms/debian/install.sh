@@ -180,4 +180,14 @@ for component in "${ADDITIONAL_COMPONENTS[@]}"; do
     IFS=':' read -r name status <<< "$component"
     echo -e "$name: $status"
 done
-echo -e "\nPlease restart your terminal or run 'source ~/.zshrc' to apply changes." 
+
+# Check current shell and provide appropriate instructions
+if [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+    echo -e "\nTo apply the changes, you can either:"
+    echo -e "1. Start a new terminal session"
+    echo -e "2. Run 'source ~/.zshrc' in your current terminal"
+else
+    echo -e "\nTo apply the changes:"
+    echo -e "1. Start a new terminal session with zsh (run 'zsh')"
+    echo -e "2. Or run 'zsh' in your current terminal"
+fi 
