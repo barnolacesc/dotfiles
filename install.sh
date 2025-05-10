@@ -6,15 +6,21 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Detect the operating system
 if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Detected macOS"
-    "$SCRIPT_DIR/platforms/macos/install.sh"
+    PLATFORM_SCRIPT="$SCRIPT_DIR/platforms/macos/install.sh"
+    chmod +x "$PLATFORM_SCRIPT"
+    "$PLATFORM_SCRIPT"
 elif [[ -f /etc/os-release ]]; then
     source /etc/os-release
     if [[ "$ID" == "ubuntu" ]]; then
         echo "Detected Ubuntu"
-        "$SCRIPT_DIR/platforms/ubuntu/install.sh"
+        PLATFORM_SCRIPT="$SCRIPT_DIR/platforms/ubuntu/install.sh"
+        chmod +x "$PLATFORM_SCRIPT"
+        "$PLATFORM_SCRIPT"
     elif [[ "$ID" == "debian" ]]; then
         echo "Detected Debian"
-        "$SCRIPT_DIR/platforms/debian/install.sh"
+        PLATFORM_SCRIPT="$SCRIPT_DIR/platforms/debian/install.sh"
+        chmod +x "$PLATFORM_SCRIPT"
+        "$PLATFORM_SCRIPT"
     else
         echo "Unsupported Linux distribution: $ID"
         exit 1
