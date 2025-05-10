@@ -5,10 +5,19 @@ Personal dotfiles for managing shell configurations and aliases across different
 ## Features
 
 - **Enhanced Zsh Configuration**
-  - Oh My Zsh with Robby Russell theme
-  - SSH-aware prompt
+  - Custom prompt showing username, hostname, SSH status, and git information
   - Syntax highlighting and autosuggestions
   - Comprehensive history and completion settings
+
+- **Custom Prompt**
+  ```
+  [SSH] username@hostname ~/current/directory git:(branch) ✗ $
+  ```
+  - SSH indicator appears when connected via SSH
+  - Username and hostname in cyan
+  - Current directory in yellow
+  - Git branch and status from robbyrussell theme
+  - Dirty status indicator (✗) when repo has uncommitted changes
 
 - **Useful Aliases**
   - Git shortcuts (20 most common commands)
@@ -19,6 +28,7 @@ Personal dotfiles for managing shell configurations and aliases across different
 - **Platform Support**
   - macOS configuration with Homebrew
   - Ubuntu configuration with apt
+  - Debian configuration with apt
   - Automatic platform detection and setup
 
 ## Prerequisites
