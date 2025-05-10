@@ -53,12 +53,12 @@ fi
 PROMPT='%{$fg[cyan]%}%n@%m%{$reset_color%} ${SSH_INDICATOR} %{$fg[yellow]%}%~%{$reset_color%} %# '
 
 # --- Systemd shortcut functions ---
-function status()  { systemctl status "$@" }
-function start()   { systemctl start "$@" }
-function stop()    { systemctl stop "$@" }
-function restart() { systemctl restart "$@" }
-function enable()  { systemctl enable "$@" }
-function disable() { systemctl disable "$@" }
+alias status='sudo systemctl status'
+alias start='sudo systemctl start'
+alias stop='sudo systemctl stop'
+alias restart='sudo systemctl restart'
+alias enable='sudo systemctl enable'
+alias disable='sudo systemctl disable'
 
 # --- Docker shortcuts ---
 alias dc='docker compose'
