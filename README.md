@@ -35,19 +35,12 @@ Personal dotfiles for managing shell configurations and aliases across different
    cd dotfiles
    ```
 
-2. Run the appropriate installation script for your platform:
-
-   For macOS:
+2. Run the installation script:
    ```bash
-   ./platforms/macos/install.sh
+   ./install.sh
    ```
 
-   For Ubuntu:
-   ```bash
-   ./platforms/ubuntu/install.sh
-   ```
-
-The installation script will:
+The script will automatically detect your operating system and run the appropriate platform-specific installation. It will:
 - Install required packages
 - Set up Oh My Zsh
 - Configure Zsh as your default shell
@@ -56,17 +49,11 @@ The installation script will:
 
 ## Plugin Installation
 
-The configuration uses two additional plugins that need to be installed manually:
+The configuration uses two additional plugins that are automatically installed by the installation script:
+- Zsh Autosuggestions
+- Zsh Syntax Highlighting
 
-1. Zsh Autosuggestions:
-   ```bash
-   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-   ```
-
-2. Zsh Syntax Highlighting:
-   ```bash
-   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-   ```
+You don't need to install these manually anymore.
 
 ## Usage
 
