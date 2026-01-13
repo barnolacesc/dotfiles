@@ -3,6 +3,7 @@
 # Get the directory where the script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DOTFILES_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
+PLATFORM="macos"
 
 # Initialize counters
 REQUIRED_TOTAL=2  # zsh and git
@@ -175,6 +176,15 @@ if command_exists fzf; then
     fi
 else
     echo "⚠️  fzf not found, skipping key bindings installation"
+fi
+
+# ============================================
+# Optional Modules
+# ============================================
+
+if [ "$WITH_NVIM" = "true" ]; then
+    source "$DOTFILES_DIR/modules/nvim.sh"
+    install_nvim_module
 fi
 
 echo -e "\033[1;32m ✓ macOS dotfiles installation complete!\033[0m"
