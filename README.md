@@ -101,6 +101,17 @@ To add your own configurations:
 1. Add new aliases in the `aliases/` directory
 2. Modify `.zshrc` for shell configuration changes
 3. Update platform-specific scripts in `platforms/` if needed
+4. Add Ghostty settings in `ghostty/config` (symlinked to `~/.config/ghostty/config` on install)
+
+## Ghostty
+
+If you use Ghostty, this repo installs a portable config file:
+
+- Source: `ghostty/config`
+- Target (all platforms): `~/.config/ghostty/config`
+- Extra macOS target: `~/Library/Application Support/com.mitchellh.ghostty/config`
+
+The installer also creates a `ghostty` CLI symlink in `~/bin` when the binary is found.
 
 ## Maintenance
 

@@ -1,0 +1,20 @@
+## Ghostty sample config
+## Syntax: key = value
+
+# Font
+font-family = "SF Mono"
+font-size = 13
+
+# Theme (run `ghostty +list-themes` to see available themes)
+theme = "Gruvbox Dark"
+
+# Window
+window-padding-x = 10
+window-padding-y = 8
+
+# Cursor
+cursor-style = block
+cursor-blink = true
+
+# macOS option key as Alt (comment out if you prefer macOS default behavior)
+macos-option-as-alt = true
