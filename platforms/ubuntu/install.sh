@@ -87,6 +87,14 @@ ln -sf "$DOTFILES_DIR/.zshrc" ~/.zshrc
 rm -rf ~/.dotfiles/aliases  # Remove any existing symlink or directory
 ln -sf "$DOTFILES_DIR/aliases" ~/.dotfiles/aliases
 
+# Link Ghostty config
+mkdir -p "$HOME/.config/ghostty"
+ln -sf "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
+if command_exists ghostty; then
+    mkdir -p "$HOME/bin"
+    ln -sf "$(command -v ghostty)" "$HOME/bin/ghostty"
+fi
+
 # Create private aliases file from template if it doesn't exist
 if [ ! -f ~/.dotfiles/aliases/private.sh ]; then
     echo "Creating private aliases file from template..."
